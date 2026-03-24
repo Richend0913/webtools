@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>カラーコード変換ツール - HEX・RGB・HSL相互変換 | WebTools</title>
+<meta name="description" content="カラーコードをHEX、RGB、HSLの各形式で相互変換できる無料オンラインツール。カラーピッカーで色を選択し、ワンクリックでコードをコピー。補色も表示。">
+<link rel="stylesheet" href="tool-template.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "カラーコード変換ツール",
+  "description": "HEX、RGB、HSL形式のカラーコードを相互変換するオンラインツール",
+  "url": "https://webtools.example.com/tools/color-picker.html",
+  "applicationCategory": "DesignApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+.color-preview { width: 100%; height: 120px; border-radius: 8px; border: 1px solid #d1d5db; margin-bottom: 16px; }
+.color-row { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.color-row input[type="text"] { flex: 1; }
+.color-row .btn { padding: 10px 16px; white-space: nowrap; font-size: .8rem; }
+.comp-box { display: flex; gap: 12px; margin-top: 16px; }
+.comp-swatch { width: 60px; height: 60px; border-radius: 8px; border: 1px solid #d1d5db; }
+.comp-label { font-size: .8rem; color: #64748b; text-align: center; margin-top: 4px; }
+input[type="color"] { width: 100%; height: 50px; padding: 2px; cursor: pointer; border-radius: 8px; }
+.copied { background: #16a34a !important; }
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../" class="logo">🛠 WebTools</a><a href="../">ホーム</a><span style="color:#94a3b8">›</span><span style="font-size:.85rem">カラーコード変換</span></div></header>
+<main class="main">
+<h1>カラーコード変換ツール</h1>
+<p class="desc">色を選択してHEX・RGB・HSLコードを相互変換</p>
+
+<div class="ad-space">広告スペース</div>
+
+<div class="tool-area">
+<h2>カラーピッカー</h2>
+<div class="form-group">
+<label>色を選択</label>
+<input type="color" id="picker" value="#2563eb">
+</div>
+<div class="color-preview" id="preview" style="background:#2563eb"></div>
+
+<div class="color-row">
+<label style="width:40px;margin:0">HEX</label>
+<input type="text" id="hex" value="#2563eb">
+<button class="btn" onclick="copyVal('hex')">コピー</button>
+</div>
+<div class="color-row">
+<label style="width:40px;margin:0">RGB</label>
+<input type="text" id="rgb" value="rgb(37, 99, 235)">
+<button class="btn" onclick="copyVal('rgb')">コピー</button>
+</div>
+<div class="color-row">
+<label style="width:40px;margin:0">HSL</label>
+<input type="text" id="hsl" value="hsl(217, 83%, 53%)">
+<button class="btn" onclick="copyVal('hsl')">コピー</button>
+</div>
+
+<h2 style="margin-top:20px">補色</h2>
+<div class="comp-box">
+<div>
+<div class="comp-swatch" id="compSwatch"></div>
+<div class="comp-label" id="compLabel"></div>
+</div>
+</div>
+</div>
+
+<div class="ad-space">広告スペース</div>
+
+<section class="info-section">
+<h2>カラーコード変換ツールとは</h2>
+<p>このカラーコード変換ツールは、ウェブデザインやグラフィックデザインで頻繁に使用されるカラーコードを、HEX（16進数）、RGB（Red・Green・Blue）、HSL（Hue・Saturation・Lightness）の3つの形式で相互変換できる無料のオンラインツールです。カラーピッカーから直感的に色を選択するだけで、各形式のカラーコードが自動的に表示されます。</p>
+<h3>使い方</h3>
+<p>上部のカラーピッカーで任意の色を選択するか、HEX・RGB・HSLの入力欄に直接カラーコードを入力してください。色を変更すると、他のすべての形式のコードが自動的に変換・更新されます。各コードの横にある「コピー」ボタンをクリックすると、クリップボードにコードがコピーされます。</p>
+<h3>補色について</h3>
+<p>補色とは、色相環上で正反対に位置する色のことです。補色を組み合わせることで、互いの色を引き立て合う効果が得られ、視認性の高いデザインを作成できます。本ツールでは、選択した色の補色を自動的に計算して表示します。</p>
+<h3>各カラーコード形式の特徴</h3>
+<ul>
+<li><strong>HEX：</strong>CSSで最もよく使われる形式。#に続く6桁の16進数で色を表現します。</li>
+<li><strong>RGB：</strong>赤・緑・青の3原色を0〜255の数値で指定。画面表示に直結した形式です。</li>
+<li><strong>HSL：</strong>色相・彩度・明度で色を表現。人間の直感に近い形式で、色の調整が容易です。</li>
+</ul>
+<p>ウェブ制作やアプリ開発、プレゼンテーション資料の作成など、色を扱うあらゆる場面でご活用いただけます。ブラウザ上で完結するため、インストール不要で即座にご利用可能です。</p>
+</section>
+</main>
+<footer class="footer">&copy; 2026 WebTools - 便利なオンラインツール集</footer>
+
+<script>
+const picker = document.getElementById('picker');
+const preview = document.getElementById('preview');
+const hexIn = document.getElementById('hex');
+const rgbIn = document.getElementById('rgb');
+const hslIn = document.getElementById('hsl');
+
+function hexToRgb(hex) {
+  hex = hex.replace('#','');
+  if(hex.length===3) hex = hex.split('').map(c=>c+c).join('');
+  const n = parseInt(hex,16);
+  return [(n>>16)&255,(n>>8)&255,n&255];
+}
+function rgbToHex(r,g,b) {
+  return '#'+[r,g,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+}
+function rgbToHsl(r,g,b) {
+  r/=255; g/=255; b/=255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b), d=max-min;
+  let h=0, s=0, l=(max+min)/2;
+  if(d!==0){
+    s = l>0.5 ? d/(2-max-min) : d/(max+min);
+    if(max===r) h=((g-b)/d+(g<b?6:0))/6;
+    else if(max===g) h=((b-r)/d+2)/6;
+    else h=((r-g)/d+4)/6;
+  }
+  return [Math.round(h*360), Math.round(s*100), Math.round(l*100)];
+}
+function hslToRgb(h,s,l) {
+  h/=360; s/=100; l/=100;
+  let r,g,b;
+  if(s===0){ r=g=b=l; }
+  else {
+    const hue2rgb=(p,q,t)=>{ if(t<0)t+=1; if(t>1)t-=1; if(t<1/6)return p+(q-p)*6*t; if(t<1/2)return q; if(t<2/3)return p+(q-p)*(2/3-t)*6; return p; };
+    const q = l<0.5 ? l*(1+s) : l+s-l*s;
+    const p = 2*l-q;
+    r=hue2rgb(p,q,h+1/3); g=hue2rgb(p,q,h); b=hue2rgb(p,q,h-1/3);
+  }
+  return [Math.round(r*255), Math.round(g*255), Math.round(b*255)];
+}
+
+function updateFromRgb(r,g,b) {
+  const hex = rgbToHex(r,g,b);
+  const [h,s,l] = rgbToHsl(r,g,b);
+  picker.value = hex;
+  preview.style.background = hex;
+  hexIn.value = hex;
+  rgbIn.value = `rgb(${r}, ${g}, ${b})`;
+  hslIn.value = `hsl(${h}, ${s}%, ${l}%)`;
+  // complementary
+  const ch = (h+180)%360;
+  const [cr,cg,cb] = hslToRgb(ch,s,l);
+  const compHex = rgbToHex(cr,cg,cb);
+  document.getElementById('compSwatch').style.background = compHex;
+  document.getElementById('compLabel').textContent = compHex;
+}
+
+picker.addEventListener('input', ()=>{ const [r,g,b]=hexToRgb(picker.value); updateFromRgb(r,g,b); });
+hexIn.addEventListener('change', ()=>{ const [r,g,b]=hexToRgb(hexIn.value); updateFromRgb(r,g,b); });
+rgbIn.addEventListener('change', ()=>{
+  const m = rgbIn.value.match(/(\d+)/g);
+  if(m&&m.length>=3) updateFromRgb(+m[0],+m[1],+m[2]);
+});
+hslIn.addEventListener('change', ()=>{
+  const m = hslIn.value.match(/(\d+)/g);
+  if(m&&m.length>=3){ const [r,g,b]=hslToRgb(+m[0],+m[1],+m[2]); updateFromRgb(r,g,b); }
+});
+
+function copyVal(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.value);
+  const btn = el.nextElementSibling;
+  btn.textContent='コピー済';
+  btn.classList.add('copied');
+  setTimeout(()=>{ btn.textContent='コピー'; btn.classList.remove('copied'); },1500);
+}
+
+// init
+updateFromRgb(37,99,235);
+</script>
+</body>
+</html>

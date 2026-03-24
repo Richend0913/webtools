@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>割り勘計算ツール - 均等割り・傾斜配分対応 | WebTools</title>
+<meta name="description" content="飲み会や食事の割り勘計算ツール。均等割りはもちろん、幹事は多めなどの傾斜配分にも対応。100円単位の端数処理も自動計算。">
+<link rel="stylesheet" href="tool-template.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "割り勘計算ツール",
+  "description": "飲み会の割り勘を均等割り・傾斜配分で計算するツール",
+  "url": "https://webtools.example.com/tools/split-bill.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+.mode-tabs { display: flex; gap: 0; margin-bottom: 20px; }
+.mode-tab { flex: 1; padding: 10px; text-align: center; cursor: pointer; border: 1px solid #d1d5db; font-size: .9rem; font-weight: 600; color: #64748b; background: #f8fafc; transition: all .2s; }
+.mode-tab:first-child { border-radius: 8px 0 0 8px; }
+.mode-tab:last-child { border-radius: 0 8px 8px 0; }
+.mode-tab.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.person-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.person-row input { flex: 1; }
+.person-row .remove-btn { background: #ef4444; color: #fff; border: none; border-radius: 6px; width: 36px; height: 36px; cursor: pointer; font-size: 1.2rem; flex-shrink: 0; }
+.equal-result { text-align: center; padding: 20px; }
+.equal-result .per-person { font-size: 2.2rem; font-weight: 700; color: #2563eb; }
+.round-options { display: flex; gap: 8px; margin: 12px 0; justify-content: center; }
+.round-opt { padding: 6px 16px; border: 1px solid #d1d5db; border-radius: 20px; cursor: pointer; font-size: .85rem; background: #fff; }
+.round-opt.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.remainder { color: #f59e0b; font-weight: 600; font-size: .9rem; margin-top: 8px; }
+.tilt-results { margin-top: 16px; }
+.tilt-result-row { display: flex; justify-content: space-between; padding: 10px 12px; border-bottom: 1px solid #f1f5f9; font-size: .9rem; }
+.tilt-result-row:last-child { border-bottom: none; }
+.tilt-result-row .name { font-weight: 600; }
+.tilt-result-row .amount { font-weight: 700; color: #2563eb; }
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../" class="logo">🛠 WebTools</a><a href="../">ホーム</a><span style="color:#94a3b8">›</span><span style="font-size:.85rem">割り勘計算</span></div></header>
+<main class="main">
+<h1>割り勘計算ツール</h1>
+<p class="desc">均等割り・傾斜配分で割り勘を計算</p>
+
+<div class="ad-space">広告スペース</div>
+
+<div class="tool-area">
+<div class="form-group">
+<label>合計金額（円）</label>
+<input type="number" id="total" value="30000" min="0">
+</div>
+
+<div class="mode-tabs">
+<div class="mode-tab active" onclick="setMode('equal')">均等割り</div>
+<div class="mode-tab" onclick="setMode('tilt')">傾斜配分</div>
+</div>
+
+<!-- Equal mode -->
+<div id="equalMode">
+<div class="form-group">
+<label>人数</label>
+<input type="number" id="people" value="5" min="1">
+</div>
+<div class="round-options">
+<div class="round-opt active" data-round="0" onclick="setRound(0)">端数あり</div>
+<div class="round-opt" data-round="100" onclick="setRound(100)">100円単位</div>
+</div>
+<button class="btn" onclick="calcEqual()" style="width:100%">計算する</button>
+<div id="equalResult" class="equal-result" style="display:none">
+<div class="result-label">1人あたり</div>
+<div class="per-person" id="perPerson"></div>
+<div class="remainder" id="remainder"></div>
+</div>
+</div>
+
+<!-- Tilt mode -->
+<div id="tiltMode" style="display:none">
+<div class="form-group">
+<label>参加者と金額を入力</label>
+<div id="personList"></div>
+<button class="btn btn-secondary" onclick="addPerson()" style="margin-top:8px;width:100%">＋ 参加者を追加</button>
+</div>
+<button class="btn" onclick="calcTilt()" style="width:100%;margin-top:12px">計算する</button>
+<div id="tiltResult" style="display:none">
+<div class="result" style="margin-top:16px">
+<div class="tilt-results" id="tiltResults"></div>
+<div style="display:flex;justify-content:space-between;padding:10px 12px;border-top:2px solid #e2e8f0;font-weight:700;margin-top:8px">
+<span>合計</span><span id="tiltTotal"></span>
+</div>
+<div class="remainder" id="tiltRemainder"></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="ad-space">広告スペース</div>
+
+<section class="info-section">
+<h2>割り勘計算ツールについて</h2>
+<p>この割り勘計算ツールは、飲み会や食事会、旅行などの費用を参加者間で公平に分担するための無料オンラインツールです。シンプルな均等割りだけでなく、「幹事は多めに」「学生は少なめに」といった傾斜配分にも対応しています。</p>
+<h3>均等割りモード</h3>
+<p>合計金額と人数を入力するだけで、1人あたりの支払い金額を計算します。100円単位での切り上げ・切り下げにも対応しており、実際の支払い場面で便利です。端数（おつり）がある場合は、その金額も表示されるため、幹事の方が端数を調整する際にも役立ちます。</p>
+<h3>傾斜配分モード</h3>
+<p>参加者ごとに異なる金額を設定できるモードです。例えば、幹事や年長者が多めに支払い、新入社員や学生が少なめに支払うといった、日本の飲み会でよくある配分を簡単に計算できます。参加者の名前と金額を自由に設定できるため、複雑な割り勘もスムーズに行えます。</p>
+<h3>使い方</h3>
+<ul>
+<li>合計金額を入力します</li>
+<li>均等割り：人数を入力し、必要に応じて100円単位の端数処理を選択します</li>
+<li>傾斜配分：参加者を追加し、それぞれの支払い金額を入力します</li>
+<li>「計算する」ボタンで結果を確認できます</li>
+</ul>
+<p>すべての計算はブラウザ上で行われるため、金額情報がサーバーに送信されることはありません。安心してご利用ください。</p>
+</section>
+</main>
+<footer class="footer">&copy; 2026 WebTools - 便利なオンラインツール集</footer>
+
+<script>
+let mode = 'equal';
+let roundUnit = 0;
+let persons = [
+  {name:'幹事', amount: 8000},
+  {name:'参加者A', amount: 6000},
+  {name:'参加者B', amount: 6000},
+  {name:'参加者C', amount: 5000},
+  {name:'参加者D', amount: 5000}
+];
+
+function setMode(m) {
+  mode = m;
+  document.querySelectorAll('.mode-tab').forEach((t,i)=> t.classList.toggle('active', (i===0&&m==='equal')||(i===1&&m==='tilt')));
+  document.getElementById('equalMode').style.display = m==='equal'?'':'none';
+  document.getElementById('tiltMode').style.display = m==='tilt'?'':'none';
+}
+function setRound(v) {
+  roundUnit = v;
+  document.querySelectorAll('.round-opt').forEach(o=> o.classList.toggle('active', +o.dataset.round===v));
+}
+function calcEqual() {
+  const total = parseFloat(document.getElementById('total').value);
+  const ppl = parseInt(document.getElementById('people').value);
+  if(!ppl||ppl<=0) return;
+  let per = total / ppl;
+  let remainder = 0;
+  if(roundUnit > 0) {
+    const rounded = Math.ceil(per / roundUnit) * roundUnit;
+    remainder = rounded * ppl - total;
+    per = rounded;
+  }
+  document.getElementById('perPerson').textContent = '¥' + per.toLocaleString();
+  const remEl = document.getElementById('remainder');
+  if(remainder > 0) {
+    remEl.textContent = '※ 端数: ¥' + remainder.toLocaleString() + ' 余り（' + ppl + '人 × ¥' + per.toLocaleString() + ' = ¥' + (per*ppl).toLocaleString() + '）';
+    remEl.style.display = '';
+  } else if(total % ppl !== 0 && roundUnit === 0) {
+    remEl.textContent = '※ 1円未満の端数が発生します';
+    remEl.style.display = '';
+  } else {
+    remEl.style.display = 'none';
+  }
+  document.getElementById('equalResult').style.display = '';
+}
+
+function renderPersons() {
+  const el = document.getElementById('personList');
+  el.innerHTML = '';
+  persons.forEach((p,i) => {
+    const row = document.createElement('div');
+    row.className = 'person-row';
+    row.innerHTML = `<input type="text" value="${p.name}" placeholder="名前" onchange="persons[${i}].name=this.value" style="max-width:120px"><input type="number" value="${p.amount}" placeholder="金額" onchange="persons[${i}].amount=+this.value"><button class="remove-btn" onclick="removePerson(${i})">×</button>`;
+    el.appendChild(row);
+  });
+}
+function addPerson() {
+  persons.push({name:'参加者'+(persons.length+1), amount: 5000});
+  renderPersons();
+}
+function removePerson(i) {
+  if(persons.length <= 1) return;
+  persons.splice(i,1);
+  renderPersons();
+}
+function calcTilt() {
+  const total = parseFloat(document.getElementById('total').value);
+  const el = document.getElementById('tiltResults');
+  el.innerHTML = '';
+  let sum = 0;
+  persons.forEach(p => {
+    sum += p.amount;
+    const row = document.createElement('div');
+    row.className = 'tilt-result-row';
+    row.innerHTML = `<span class="name">${p.name}</span><span class="amount">¥${p.amount.toLocaleString()}</span>`;
+    el.appendChild(row);
+  });
+  document.getElementById('tiltTotal').textContent = '¥' + sum.toLocaleString();
+  const rem = document.getElementById('tiltRemainder');
+  const diff = sum - total;
+  if(diff !== 0) {
+    rem.textContent = diff > 0 ? `※ 合計金額より ¥${diff.toLocaleString()} 多く集まります` : `※ 合計金額より ¥${Math.abs(diff).toLocaleString()} 不足しています`;
+    rem.style.color = diff > 0 ? '#22c55e' : '#ef4444';
+    rem.style.display = '';
+  } else {
+    rem.style.display = 'none';
+  }
+  document.getElementById('tiltResult').style.display = '';
+}
+renderPersons();
+</script>
+</body>
+</html>

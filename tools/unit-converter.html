@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>単位変換ツール - 長さ・重さ・温度・面積・体積 | WebTools</title>
+<meta name="description" content="長さ、重さ、温度、面積、体積の単位を簡単に変換できる無料オンラインツール。メートル法、ヤードポンド法、坪・畳など日本の単位にも対応。">
+<link rel="stylesheet" href="tool-template.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "単位変換ツール",
+  "description": "長さ・重さ・温度・面積・体積の単位を変換するオンラインツール",
+  "url": "https://webtools.example.com/tools/unit-converter.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+.cat-tabs { display: flex; gap: 0; margin-bottom: 20px; flex-wrap: wrap; }
+.cat-tab { flex: 1; min-width: 60px; padding: 10px 4px; text-align: center; cursor: pointer; border: 1px solid #d1d5db; font-size: .85rem; font-weight: 600; color: #64748b; background: #f8fafc; transition: all .2s; }
+.cat-tab:first-child { border-radius: 8px 0 0 8px; }
+.cat-tab:last-child { border-radius: 0 8px 8px 0; }
+.cat-tab.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+.convert-area { display: flex; align-items: center; gap: 12px; }
+.convert-area > div { flex: 1; }
+.swap-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #2563eb; padding: 8px; flex-shrink: 0; }
+.all-results { margin-top: 16px; background: #f8fafc; border-radius: 8px; padding: 12px; }
+.all-results .row-item { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f1f5f9; font-size: .9rem; }
+.all-results .row-item:last-child { border-bottom: none; }
+.all-results .unit-name { color: #64748b; }
+.all-results .unit-val { font-weight: 600; color: #1e293b; }
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../" class="logo">🛠 WebTools</a><a href="../">ホーム</a><span style="color:#94a3b8">›</span><span style="font-size:.85rem">単位変換</span></div></header>
+<main class="main">
+<h1>単位変換ツール</h1>
+<p class="desc">長さ・重さ・温度・面積・体積を簡単変換</p>
+
+<div class="ad-space">広告スペース</div>
+
+<div class="tool-area">
+<div class="cat-tabs" id="catTabs"></div>
+
+<div class="convert-area">
+<div>
+<div class="form-group">
+<label>変換元</label>
+<input type="number" id="fromVal" value="1" step="any">
+</div>
+<div class="form-group">
+<select id="fromUnit"></select>
+</div>
+</div>
+<button class="swap-btn" onclick="swapUnits()" title="入れ替え">⇄</button>
+<div>
+<div class="form-group">
+<label>変換先</label>
+<input type="number" id="toVal" readonly style="background:#f8fafc">
+</div>
+<div class="form-group">
+<select id="toUnit"></select>
+</div>
+</div>
+</div>
+
+<h2 style="margin-top:20px;font-size:.95rem">すべての単位で表示</h2>
+<div class="all-results" id="allResults"></div>
+</div>
+
+<div class="ad-space">広告スペース</div>
+
+<section class="info-section">
+<h2>単位変換ツールについて</h2>
+<p>この単位変換ツールは、日常生活や仕事で必要になるさまざまな単位の変換を、簡単かつ正確に行える無料のオンラインツールです。長さ、重さ、温度、面積、体積の5カテゴリに対応しており、メートル法、ヤードポンド法はもちろん、坪や畳といった日本独自の単位にも対応しています。</p>
+<h3>対応カテゴリと単位</h3>
+<ul>
+<li><strong>長さ：</strong>ミリメートル、センチメートル、メートル、キロメートル、インチ、フィート、ヤード、マイル</li>
+<li><strong>重さ：</strong>ミリグラム、グラム、キログラム、トン、オンス、ポンド</li>
+<li><strong>温度：</strong>摂氏（℃）、華氏（℉）、ケルビン（K）</li>
+<li><strong>面積：</strong>平方ミリメートル、平方センチメートル、平方メートル、平方キロメートル、ヘクタール、坪、畳、エーカー、平方フィート</li>
+<li><strong>体積：</strong>ミリリットル、リットル、cc、立方メートル、ガロン、液量オンス、カップ</li>
+</ul>
+<h3>使い方</h3>
+<p>上部のタブで変換したいカテゴリを選択し、変換元の数値と単位、変換先の単位を指定するだけで自動的に変換結果が表示されます。「⇄」ボタンで変換元と変換先を入れ替えることもできます。また、下部には入力値をすべての対応単位で表示する一覧もあり、複数の単位を同時に確認できて便利です。</p>
+<p>不動産で使われる坪や畳、料理で使われるカップやオンスなど、日常的によく使う単位を幅広くカバーしています。インストール不要で、ブラウザ上ですぐにご利用いただけます。</p>
+</section>
+</main>
+<footer class="footer">&copy; 2026 WebTools - 便利なオンラインツール集</footer>
+
+<script>
+const categories = {
+  '長さ': {
+    units: ['mm','cm','m','km','inch','ft','yard','mile'],
+    labels: ['ミリメートル','センチメートル','メートル','キロメートル','インチ','フィート','ヤード','マイル'],
+    toBase: [0.001, 0.01, 1, 1000, 0.0254, 0.3048, 0.9144, 1609.344],
+    type: 'multiply'
+  },
+  '重さ': {
+    units: ['mg','g','kg','ton','oz','lb'],
+    labels: ['ミリグラム','グラム','キログラム','トン','オンス','ポンド'],
+    toBase: [0.000001, 0.001, 1, 1000, 0.0283495, 0.453592],
+    type: 'multiply'
+  },
+  '温度': {
+    units: ['℃','℉','K'],
+    labels: ['摂氏（℃）','華氏（℉）','ケルビン（K）'],
+    type: 'temperature'
+  },
+  '面積': {
+    units: ['mm²','cm²','m²','km²','ha','坪','畳','acre','sqft'],
+    labels: ['平方mm','平方cm','平方m','平方km','ヘクタール','坪','畳','エーカー','平方フィート'],
+    toBase: [0.000001, 0.0001, 1, 1000000, 10000, 3.30579, 1.62, 4046.86, 0.092903],
+    type: 'multiply'
+  },
+  '体積': {
+    units: ['mL','L','cc','m³','gal','fl oz','cup'],
+    labels: ['ミリリットル','リットル','cc','立方メートル','ガロン','液量オンス','カップ'],
+    toBase: [0.000001, 0.001, 0.000001, 1, 0.00378541, 0.0000295735, 0.000236588],
+    type: 'multiply'
+  }
+};
+
+let currentCat = '長さ';
+
+function tempConvert(val, from, to) {
+  // to celsius first
+  let c;
+  if(from==='℃') c=val;
+  else if(from==='℉') c=(val-32)*5/9;
+  else c=val-273.15;
+  // from celsius
+  if(to==='℃') return c;
+  if(to==='℉') return c*9/5+32;
+  return c+273.15;
+}
+
+function convert(val, fromIdx, toIdx, cat) {
+  if(cat.type==='temperature') return tempConvert(val, cat.units[fromIdx], cat.units[toIdx]);
+  const base = val * cat.toBase[fromIdx];
+  return base / cat.toBase[toIdx];
+}
+
+function formatNum(n) {
+  if(n===0) return '0';
+  const abs = Math.abs(n);
+  if(abs >= 1000) return n.toLocaleString(undefined,{maximumFractionDigits:4});
+  if(abs >= 1) return n.toLocaleString(undefined,{maximumFractionDigits:6});
+  if(abs >= 0.001) return n.toLocaleString(undefined,{maximumFractionDigits:8});
+  return n.toExponential(4);
+}
+
+function renderTabs() {
+  const el = document.getElementById('catTabs');
+  el.innerHTML = '';
+  Object.keys(categories).forEach(name => {
+    const tab = document.createElement('div');
+    tab.className = 'cat-tab' + (name===currentCat?' active':'');
+    tab.textContent = name;
+    tab.onclick = () => { currentCat = name; renderTabs(); populateSelects(); doConvert(); };
+    el.appendChild(tab);
+  });
+}
+
+function populateSelects() {
+  const cat = categories[currentCat];
+  const fromSel = document.getElementById('fromUnit');
+  const toSel = document.getElementById('toUnit');
+  fromSel.innerHTML = '';
+  toSel.innerHTML = '';
+  cat.units.forEach((u,i) => {
+    fromSel.innerHTML += `<option value="${i}">${cat.labels[i]}（${u}）</option>`;
+    toSel.innerHTML += `<option value="${i}">${cat.labels[i]}（${u}）</option>`;
+  });
+  if(cat.units.length > 1) toSel.value = '1';
+}
+
+function doConvert() {
+  const cat = categories[currentCat];
+  const val = parseFloat(document.getElementById('fromVal').value) || 0;
+  const fi = parseInt(document.getElementById('fromUnit').value);
+  const ti = parseInt(document.getElementById('toUnit').value);
+  const result = convert(val, fi, ti, cat);
+  document.getElementById('toVal').value = formatNum(result);
+
+  // all results
+  const el = document.getElementById('allResults');
+  el.innerHTML = '';
+  cat.units.forEach((u,i) => {
+    const r = convert(val, fi, i, cat);
+    el.innerHTML += `<div class="row-item"><span class="unit-name">${cat.labels[i]}（${u}）</span><span class="unit-val">${formatNum(r)}</span></div>`;
+  });
+}
+
+function swapUnits() {
+  const f = document.getElementById('fromUnit');
+  const t = document.getElementById('toUnit');
+  [f.value, t.value] = [t.value, f.value];
+  doConvert();
+}
+
+document.getElementById('fromVal').addEventListener('input', doConvert);
+document.getElementById('fromUnit').addEventListener('change', doConvert);
+document.getElementById('toUnit').addEventListener('change', doConvert);
+
+renderTabs();
+populateSelects();
+doConvert();
+</script>
+</body>
+</html>

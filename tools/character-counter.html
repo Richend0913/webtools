@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文字数カウンター｜無料オンライン文字数チェックツール</title>
+  <meta name="description" content="テキストの文字数・単語数・行数・段落数・バイト数をリアルタイムでカウント。読了時間の目安も表示。登録不要・無料で使えるオンライン文字数カウンターです。">
+  <meta name="keywords" content="文字数カウンター,文字数チェック,単語数,行数,バイト数,テキスト,オンラインツール">
+  <link rel="canonical" href="https://richend0913.github.io/webtools/tools/character-counter.html">
+  <link rel="stylesheet" href="tool-template.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "文字数カウンター",
+    "description": "テキストの文字数・単語数・行数・段落数・バイト数をリアルタイムでカウントするオンラインツール",
+    "url": "https://richend0913.github.io/webtools/tools/character-counter.html",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../" class="logo">ツールボックス</a>
+      <a href="../">ホーム</a> <span style="color:#94a3b8;">›</span> <span style="color:#64748b;font-size:.85rem;">文字数カウンター</span>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1>文字数カウンター</h1>
+    <p class="desc">テキストの文字数・単語数・行数・段落数・バイト数をリアルタイムでカウントします。</p>
+
+    <div class="ad-space">広告スペース</div>
+
+    <div class="tool-area">
+      <h2>テキストを入力</h2>
+      <div class="form-group">
+        <textarea id="inputText" placeholder="ここにテキストを入力またはペーストしてください..." rows="8"></textarea>
+      </div>
+      <div class="form-group" style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-secondary" onclick="document.getElementById('inputText').value='';countText();">クリア</button>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:16px;">
+        <div class="result" style="text-align:center;">
+          <div class="result-value" id="charWithSpaces">0</div>
+          <div class="result-label">文字数（スペース含む）</div>
+        </div>
+        <div class="result" style="text-align:center;">
+          <div class="result-value" id="charWithoutSpaces">0</div>
+          <div class="result-label">文字数（スペース除く）</div>
+        </div>
+        <div class="result" style="text-align:center;">
+          <div class="result-value" id="wordCount">0</div>
+          <div class="result-label">単語数</div>
+        </div>
+        <div class="result" style="text-align:center;">
+          <div class="result-value" id="lineCount">0</div>
+          <div class="result-label">行数</div>
+        </div>
+        <div class="result" style="text-align:center;">
+          <div class="result-value" id="paragraphCount">0</div>
+          <div class="result-label">段落数</div>
+        </div>
+        <div class="result" style="text-align:center;">
+          <div class="result-value" id="byteCount">0</div>
+          <div class="result-label">バイト数</div>
+        </div>
+      </div>
+      <div class="result" style="margin-top:12px;text-align:center;">
+        <div class="result-label">読了時間の目安</div>
+        <div style="font-size:1.2rem;font-weight:600;color:#2563eb;" id="readingTime">約 0 分</div>
+      </div>
+    </div>
+
+    <div class="ad-space">広告スペース</div>
+
+    <section class="info-section">
+      <h2>文字数カウンターとは</h2>
+      <p>文字数カウンターは、入力されたテキストのさまざまな統計情報をリアルタイムで計測するオンラインツールです。ブログ記事の執筆、レポート作成、SNS投稿、小説の執筆など、文字数制限のある場面で活躍します。</p>
+
+      <h3>計測できる項目</h3>
+      <ul>
+        <li><strong>文字数（スペース含む）</strong> - 空白文字を含むすべての文字数をカウントします。</li>
+        <li><strong>文字数（スペース除く）</strong> - 空白文字（スペース・タブ）を除いた文字数をカウントします。</li>
+        <li><strong>単語数</strong> - 日本語のテキストでは文字単位、英語では空白区切りの単語数をカウントします。</li>
+        <li><strong>行数</strong> - テキストの行数を改行で区切ってカウントします。</li>
+        <li><strong>段落数</strong> - 空行で区切られた段落の数をカウントします。</li>
+        <li><strong>バイト数</strong> - UTF-8エンコーディングでのバイト数を計算します。日本語は1文字あたり3バイトです。</li>
+      </ul>
+
+      <h3>読了時間について</h3>
+      <p>読了時間は、日本語の平均読書速度（1分あたり約400〜600文字）を基に計算しています。実際の読了時間は内容の難易度や読者のスキルによって異なりますが、おおよその目安としてご活用ください。ブログ記事やコンテンツの長さを検討する際に役立ちます。</p>
+
+      <h3>使い方</h3>
+      <p>テキストエリアにテキストを入力またはペーストするだけで、すべての統計情報がリアルタイムに更新されます。登録やインストールは不要で、ブラウザ上ですぐにご利用いただけます。入力されたテキストはサーバーに送信されず、すべてブラウザ内で処理されるため、プライバシーも安全です。</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 ツールボックス All rights reserved.
+  </footer>
+
+  <script>
+    const inputText = document.getElementById('inputText');
+    inputText.addEventListener('input', countText);
+
+    function countText() {
+      const text = inputText.value;
+
+      // 文字数（スペース含む）
+      document.getElementById('charWithSpaces').textContent = text.length;
+
+      // 文字数（スペース除く）
+      document.getElementById('charWithoutSpaces').textContent = text.replace(/[\s\t]/g, '').length;
+
+      // 単語数: split by whitespace for mixed text
+      const trimmed = text.trim();
+      if (trimmed === '') {
+        document.getElementById('wordCount').textContent = 0;
+      } else {
+        // Count Japanese characters individually + English words
+        const japaneseChars = (trimmed.match(/[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf\u3400-\u4dbf]/g) || []).length;
+        const withoutJapanese = trimmed.replace(/[\u3000-\u303f\u3040-\u309f\u30a0-\u30ff\u4e00-\u9faf\u3400-\u4dbf]/g, ' ');
+        const englishWords = withoutJapanese.trim().split(/\s+/).filter(w => w.length > 0).length;
+        document.getElementById('wordCount').textContent = japaneseChars + englishWords;
+      }
+
+      // 行数
+      if (text === '') {
+        document.getElementById('lineCount').textContent = 0;
+      } else {
+        document.getElementById('lineCount').textContent = text.split('\n').length;
+      }
+
+      // 段落数
+      if (trimmed === '') {
+        document.getElementById('paragraphCount').textContent = 0;
+      } else {
+        const paragraphs = trimmed.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+        document.getElementById('paragraphCount').textContent = paragraphs.length;
+      }
+
+      // バイト数 (UTF-8)
+      const byteSize = new Blob([text]).size;
+      document.getElementById('byteCount').textContent = byteSize;
+
+      // 読了時間 (500文字/分)
+      const charCount = text.replace(/\s/g, '').length;
+      const minutes = Math.ceil(charCount / 500);
+      document.getElementById('readingTime').textContent = charCount === 0 ? '約 0 分' : `約 ${minutes} 分`;
+    }
+  </script>
+</body>
+</html>

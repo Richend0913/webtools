@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI計算ツール - 肥満度判定・適正体重計算 | WebTools</title>
+<meta name="description" content="身長と体重からBMI値を計算し、肥満度を判定。WHO基準と日本肥満学会基準の両方に対応。適正体重・標準体重との差も表示。">
+<link rel="stylesheet" href="tool-template.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "BMI計算ツール",
+  "description": "身長と体重からBMI値を計算し肥満度を判定するツール",
+  "url": "https://webtools.example.com/tools/bmi-calculator.html",
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+.bmi-meter { position: relative; height: 40px; border-radius: 20px; margin: 20px 0; overflow: hidden; display: flex; }
+.bmi-zone { height: 100%; display: flex; align-items: center; justify-content: center; font-size: .7rem; color: #fff; font-weight: 600; }
+.bmi-marker { position: absolute; top: -8px; width: 4px; height: 56px; background: #1e293b; border-radius: 2px; transform: translateX(-50%); transition: left .5s; }
+.bmi-marker::after { content: attr(data-val); position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-size: .8rem; font-weight: 700; color: #1e293b; white-space: nowrap; }
+.judgment { font-size: 1.2rem; font-weight: 700; padding: 8px 16px; border-radius: 8px; display: inline-block; margin-top: 8px; }
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.result-card { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px; text-align: center; }
+.result-card .result-value { font-size: 1.4rem; }
+.result-card .result-label { font-size: .8rem; color: #64748b; margin-bottom: 4px; }
+.standards { margin-top: 16px; font-size: .85rem; }
+.standards table { width: 100%; border-collapse: collapse; }
+.standards th, .standards td { padding: 6px 10px; border: 1px solid #e2e8f0; text-align: center; }
+.standards th { background: #f8fafc; font-weight: 600; }
+@media(max-width:600px){ .results-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../" class="logo">🛠 WebTools</a><a href="../">ホーム</a><span style="color:#94a3b8">›</span><span style="font-size:.85rem">BMI計算</span></div></header>
+<main class="main">
+<h1>BMI計算ツール</h1>
+<p class="desc">身長と体重からBMI・肥満度を判定</p>
+
+<div class="ad-space">広告スペース</div>
+
+<div class="tool-area">
+<h2>身長・体重を入力</h2>
+<div class="row">
+<div class="form-group">
+<label>身長（cm）</label>
+<input type="number" id="height" value="170" min="50" max="250" step="0.1">
+</div>
+<div class="form-group">
+<label>体重（kg）</label>
+<input type="number" id="weight" value="65" min="10" max="300" step="0.1">
+</div>
+</div>
+<button class="btn" onclick="calc()" style="width:100%">計算する</button>
+
+<div id="results" style="display:none">
+<div style="text-align:center;margin-top:20px">
+<div class="result-label">あなたのBMI</div>
+<div class="result-value" id="bmiVal" style="font-size:2.5rem"></div>
+<div class="judgment" id="judgment"></div>
+</div>
+
+<div class="bmi-meter" id="meter">
+<div class="bmi-zone" style="flex:18.5;background:#3b82f6">低体重</div>
+<div class="bmi-zone" style="flex:6.5;background:#22c55e">普通</div>
+<div class="bmi-zone" style="flex:5;background:#f59e0b">肥満1</div>
+<div class="bmi-zone" style="flex:5;background:#f97316">肥満2</div>
+<div class="bmi-zone" style="flex:5;background:#ef4444">肥満3</div>
+<div class="bmi-marker" id="marker"></div>
+</div>
+
+<div class="results-grid">
+<div class="result-card">
+<div class="result-label">適正体重（BMI 22）</div>
+<div class="result-value" id="idealW"></div>
+</div>
+<div class="result-card">
+<div class="result-label">標準体重との差</div>
+<div class="result-value" id="diffW"></div>
+</div>
+</div>
+
+<div class="standards">
+<h2 style="font-size:.95rem;margin:20px 0 8px">日本肥満学会基準</h2>
+<table>
+<tr><th>BMI</th><th>判定</th></tr>
+<tr><td>18.5未満</td><td>低体重（やせ）</td></tr>
+<tr><td>18.5〜25未満</td><td>普通体重</td></tr>
+<tr><td>25〜30未満</td><td>肥満（1度）</td></tr>
+<tr><td>30〜35未満</td><td>肥満（2度）</td></tr>
+<tr><td>35以上</td><td>肥満（3度・高度肥満）</td></tr>
+</table>
+</div>
+</div>
+</div>
+
+<div class="ad-space">広告スペース</div>
+
+<section class="info-section">
+<h2>BMI計算ツールについて</h2>
+<p>BMI（Body Mass Index：体格指数）は、身長と体重から算出される肥満度を表す指標です。世界保健機関（WHO）が推奨する国際的な基準であり、成人の健康管理において広く活用されています。計算式は「体重(kg) ÷ 身長(m)²」で、簡単に求めることができます。</p>
+<h3>日本肥満学会の基準</h3>
+<p>日本肥満学会では、BMI 22を最も病気になりにくい「標準体重」としています。BMI 18.5未満を「低体重（やせ）」、18.5以上25未満を「普通体重」、25以上を「肥満」と分類しています。日本人は欧米人に比べて肥満による健康リスクが高いとされ、WHOの基準よりも厳しい肥満判定が採用されています。</p>
+<h3>適正体重の計算方法</h3>
+<p>適正体重は「身長(m)² × 22」で求められます。BMI 22は統計的に最も病気にかかりにくい数値とされており、健康維持の目安として広く使われています。ただし、BMIは筋肉量や体脂肪率を考慮していないため、アスリートなど筋肉量の多い方は高めに出る傾向があります。</p>
+<h3>使い方</h3>
+<ul>
+<li>身長をセンチメートル（cm）単位で入力します</li>
+<li>体重をキログラム（kg）単位で入力します</li>
+<li>「計算する」ボタンをクリックすると、BMI値、肥満度判定、適正体重、標準体重との差が表示されます</li>
+<li>カラーバーで視覚的にBMIの位置を確認できます</li>
+</ul>
+</section>
+</main>
+<footer class="footer">&copy; 2026 WebTools - 便利なオンラインツール集</footer>
+
+<script>
+function calc() {
+  const h = parseFloat(document.getElementById('height').value) / 100;
+  const w = parseFloat(document.getElementById('weight').value);
+  const bmi = w / (h*h);
+  const ideal = 22 * h * h;
+  const diff = w - ideal;
+
+  document.getElementById('bmiVal').textContent = bmi.toFixed(1);
+  document.getElementById('idealW').textContent = ideal.toFixed(1) + ' kg';
+  document.getElementById('diffW').textContent = (diff >= 0 ? '+' : '') + diff.toFixed(1) + ' kg';
+
+  const jEl = document.getElementById('judgment');
+  let label, color;
+  if (bmi < 18.5) { label='低体重（やせ）'; color='#3b82f6'; }
+  else if (bmi < 25) { label='普通体重'; color='#22c55e'; }
+  else if (bmi < 30) { label='肥満（1度）'; color='#f59e0b'; }
+  else if (bmi < 35) { label='肥満（2度）'; color='#f97316'; }
+  else { label='肥満（3度）'; color='#ef4444'; }
+  jEl.textContent = label;
+  jEl.style.background = color + '20';
+  jEl.style.color = color;
+
+  // meter marker: range 10-40
+  const pct = Math.min(Math.max((bmi-10)/30*100, 0), 100);
+  const marker = document.getElementById('marker');
+  marker.style.left = pct + '%';
+  marker.setAttribute('data-val', bmi.toFixed(1));
+
+  document.getElementById('results').style.display = '';
+}
+calc();
+</script>
+</body>
+</html>

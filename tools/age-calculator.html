@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>年齢計算ツール - 干支・星座・和暦も表示 | WebTools</title>
+<meta name="description" content="生年月日から年齢、干支、星座、和暦（令和・平成・昭和）、生まれてからの日数、次の誕生日までの日数を計算する無料ツール。">
+<link rel="stylesheet" href="tool-template.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "年齢計算ツール",
+  "description": "生年月日から年齢・干支・星座・和暦を計算するツール",
+  "url": "https://webtools.example.com/tools/age-calculator.html",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.info-card { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px; text-align: center; }
+.info-card.wide { grid-column: 1 / -1; }
+.info-card .val { font-size: 1.6rem; font-weight: 700; color: #2563eb; }
+.info-card .lbl { font-size: .8rem; color: #64748b; margin-bottom: 4px; }
+.info-card .sub { font-size: .85rem; color: #64748b; margin-top: 4px; }
+.zodiac-icon { font-size: 2rem; }
+@media(max-width:600px){ .info-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../" class="logo">🛠 WebTools</a><a href="../">ホーム</a><span style="color:#94a3b8">›</span><span style="font-size:.85rem">年齢計算</span></div></header>
+<main class="main">
+<h1>年齢計算ツール</h1>
+<p class="desc">生年月日から年齢・干支・星座・和暦を表示</p>
+
+<div class="ad-space">広告スペース</div>
+
+<div class="tool-area">
+<h2>生年月日を入力</h2>
+<div class="form-group">
+<label>生年月日</label>
+<input type="date" id="birthday" value="1990-01-01">
+</div>
+<button class="btn" onclick="calc()" style="width:100%">計算する</button>
+
+<div id="results" style="display:none">
+<div class="info-grid">
+<div class="info-card wide">
+<div class="lbl">年齢</div>
+<div class="val" id="age"></div>
+</div>
+<div class="info-card">
+<div class="lbl">和暦</div>
+<div class="val" id="wareki" style="font-size:1.2rem"></div>
+</div>
+<div class="info-card">
+<div class="lbl">干支（えと）</div>
+<div class="zodiac-icon" id="etoIcon"></div>
+<div class="val" id="eto" style="font-size:1.1rem"></div>
+</div>
+<div class="info-card">
+<div class="lbl">星座</div>
+<div class="zodiac-icon" id="seizaIcon"></div>
+<div class="val" id="seiza" style="font-size:1.1rem"></div>
+</div>
+<div class="info-card">
+<div class="lbl">生まれてからの日数</div>
+<div class="val" id="days"></div>
+</div>
+<div class="info-card">
+<div class="lbl">次の誕生日まで</div>
+<div class="val" id="nextBday"></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="ad-space">広告スペース</div>
+
+<section class="info-section">
+<h2>年齢計算ツールについて</h2>
+<p>この年齢計算ツールは、生年月日を入力するだけで、現在の年齢はもちろん、干支（十二支）、西洋占星術の星座、和暦（令和・平成・昭和・大正）、生まれてからの日数、次の誕生日までの日数など、さまざまな情報を一度に確認できる便利な無料ツールです。</p>
+<h3>干支（十二支）について</h3>
+<p>干支は、子（ね）・丑（うし）・寅（とら）・卯（う）・辰（たつ）・巳（み）・午（うま）・未（ひつじ）・申（さる）・酉（とり）・戌（いぬ）・亥（い）の12種類の動物で構成される、東アジアで古くから使われている暦の体系です。日本では年賀状や正月の挨拶など、日常的に使われています。干支は生まれ年によって決まり、12年で一巡します。</p>
+<h3>和暦について</h3>
+<p>日本独自の元号による暦法です。現在は令和（2019年5月1日〜）が使用されています。本ツールでは、令和・平成（1989年1月8日〜）・昭和（1926年12月25日〜）・大正（1912年7月30日〜）に対応しています。公的書類や履歴書の記入時に和暦が必要な場面で役立ちます。</p>
+<h3>使い方</h3>
+<ul>
+<li>生年月日をカレンダーから選択するか、直接入力します</li>
+<li>「計算する」ボタンをクリックすると、すべての情報が一覧表示されます</li>
+<li>日付を変更して再計算することで、任意の誕生日の情報を確認できます</li>
+</ul>
+<p>お子様の年齢確認、履歴書の和暦記入、占いでの星座確認など、幅広い用途でご活用いただけます。すべてブラウザ上で計算されるため、個人情報がサーバーに送信されることはありません。</p>
+</section>
+</main>
+<footer class="footer">&copy; 2026 WebTools - 便利なオンラインツール集</footer>
+
+<script>
+function calc() {
+  const bd = new Date(document.getElementById('birthday').value);
+  const now = new Date();
+
+  // age
+  let age = now.getFullYear() - bd.getFullYear();
+  const mDiff = now.getMonth() - bd.getMonth();
+  if (mDiff < 0 || (mDiff === 0 && now.getDate() < bd.getDate())) age--;
+  document.getElementById('age').textContent = age + '歳';
+
+  // wareki
+  const y = bd.getFullYear(), m = bd.getMonth()+1, d = bd.getDate();
+  let wareki = '';
+  const bdNum = y*10000 + m*100 + d;
+  if (bdNum >= 20190501) wareki = '令和' + (y-2018) + '年';
+  else if (bdNum >= 19890108) wareki = '平成' + (y-1988) + '年';
+  else if (bdNum >= 19261225) wareki = '昭和' + (y-1925) + '年';
+  else if (bdNum >= 19120730) wareki = '大正' + (y-1911) + '年';
+  else wareki = '明治' + (y-1867) + '年';
+  document.getElementById('wareki').textContent = wareki + m + '月' + d + '日';
+
+  // eto
+  const etoNames = ['子（ね）','丑（うし）','寅（とら）','卯（う）','辰（たつ）','巳（み）','午（うま）','未（ひつじ）','申（さる）','酉（とり）','戌（いぬ）','亥（い）'];
+  const etoEmoji = ['🐭','🐮','🐯','🐰','🐲','🐍','🐴','🐑','🐵','🐔','🐶','🐗'];
+  const etoIdx = (y - 4) % 12;
+  const idx = ((etoIdx % 12) + 12) % 12;
+  document.getElementById('eto').textContent = etoNames[idx];
+  document.getElementById('etoIcon').textContent = etoEmoji[idx];
+
+  // seiza
+  const seizaData = [
+    [120,'やぎ座','♑'],[219,'みずがめ座','♒'],[320,'うお座','♓'],
+    [420,'おひつじ座','♈'],[521,'おうし座','♉'],[621,'ふたご座','♊'],
+    [722,'かに座','♋'],[822,'しし座','♌'],[923,'おとめ座','♍'],
+    [1023,'てんびん座','♎'],[1122,'さそり座','♏'],[1222,'いて座','♐'],
+    [1232,'やぎ座','♑']
+  ];
+  const md = m*100+d;
+  let seizaName='', seizaIcon='';
+  for(let i=0;i<seizaData.length-1;i++){
+    if(md<=seizaData[i][0]||(i===seizaData.length-2)){
+      seizaName=seizaData[i][1]; seizaIcon=seizaData[i][2]; break;
+    }
+    if(md>seizaData[i][0]&&md<=seizaData[i+1][0]){
+      seizaName=seizaData[i+1][1]; seizaIcon=seizaData[i+1][2]; break;
+    }
+  }
+  document.getElementById('seiza').textContent = seizaName;
+  document.getElementById('seizaIcon').textContent = seizaIcon;
+
+  // days alive
+  const daysAlive = Math.floor((now - bd) / 86400000);
+  document.getElementById('days').textContent = daysAlive.toLocaleString() + '日';
+
+  // next birthday
+  let nextBd = new Date(now.getFullYear(), bd.getMonth(), bd.getDate());
+  if (nextBd <= now) nextBd = new Date(now.getFullYear()+1, bd.getMonth(), bd.getDate());
+  const daysUntil = Math.ceil((nextBd - now) / 86400000);
+  document.getElementById('nextBday').textContent = daysUntil + '日後';
+
+  document.getElementById('results').style.display = '';
+}
+calc();
+</script>
+</body>
+</html>

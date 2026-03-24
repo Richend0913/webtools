@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テキスト変換ツール｜全角半角・大文字小文字・カナ変換</title>
+  <meta name="description" content="テキストの全角⇔半角変換、大文字⇔小文字変換、カタカナ⇔ひらがな変換がワンクリックで完了。登録不要・無料で使えるオンラインテキスト変換ツールです。">
+  <meta name="keywords" content="テキスト変換,全角半角変換,大文字小文字,カタカナひらがな変換,オンラインツール">
+  <link rel="canonical" href="https://richend0913.github.io/webtools/tools/text-converter.html">
+  <link rel="stylesheet" href="tool-template.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "テキスト変換ツール",
+    "description": "全角半角・大文字小文字・カタカナひらがな変換ができるオンラインツール",
+    "url": "https://richend0913.github.io/webtools/tools/text-converter.html",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../" class="logo">ツールボックス</a>
+      <a href="../">ホーム</a> <span style="color:#94a3b8;">›</span> <span style="color:#64748b;font-size:.85rem;">テキスト変換</span>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1>テキスト変換ツール</h1>
+    <p class="desc">全角⇔半角、大文字⇔小文字、カタカナ⇔ひらがなの変換をワンクリックで行えます。</p>
+
+    <div class="ad-space">広告スペース</div>
+
+    <div class="tool-area">
+      <h2>入力テキスト</h2>
+      <div class="form-group">
+        <textarea id="inputText" placeholder="変換したいテキストを入力してください..." rows="6"></textarea>
+      </div>
+
+      <h2>変換ボタン</h2>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+        <button class="btn" onclick="convert('fullToHalf')">全角→半角</button>
+        <button class="btn" onclick="convert('halfToFull')">半角→全角</button>
+        <button class="btn" onclick="convert('upperToLower')">大文字→小文字</button>
+        <button class="btn" onclick="convert('lowerToUpper')">小文字→大文字</button>
+        <button class="btn" onclick="convert('kataToHira')">カタカナ→ひらがな</button>
+        <button class="btn" onclick="convert('hiraToKata')">ひらがな→カタカナ</button>
+      </div>
+
+      <h2>変換結果</h2>
+      <div class="form-group">
+        <textarea id="outputText" placeholder="変換結果がここに表示されます..." rows="6" readonly></textarea>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary" onclick="copyResult()">クリップボードにコピー</button>
+        <button class="btn btn-secondary" onclick="swapTexts()">入力と結果を入れ替え</button>
+      </div>
+      <div id="copyMsg" style="color:#16a34a;font-size:.85rem;margin-top:8px;display:none;">コピーしました！</div>
+    </div>
+
+    <div class="ad-space">広告スペース</div>
+
+    <section class="info-section">
+      <h2>テキスト変換ツールとは</h2>
+      <p>テキスト変換ツールは、入力されたテキストを様々な形式に変換できるオンラインツールです。全角文字と半角文字の相互変換、英字の大文字・小文字変換、カタカナとひらがなの相互変換に対応しています。データ入力、文書校正、プログラミングなど幅広い用途でご活用いただけます。</p>
+
+      <h3>変換機能の詳細</h3>
+      <ul>
+        <li><strong>全角→半角</strong> - 全角英数字・記号を半角に変換します。Webフォーム入力やCSVデータの整形に便利です。</li>
+        <li><strong>半角→全角</strong> - 半角英数字・記号を全角に変換します。日本語文書で統一的な表記にしたい場合に使えます。</li>
+        <li><strong>大文字→小文字</strong> - 英字をすべて小文字に変換します。メールアドレスやURLの正規化に役立ちます。</li>
+        <li><strong>小文字→大文字</strong> - 英字をすべて大文字に変換します。強調表示やコード定数の命名に使えます。</li>
+        <li><strong>カタカナ→ひらがな</strong> - カタカナをひらがなに変換します。読みやすさを向上させたい場合に有用です。</li>
+        <li><strong>ひらがな→カタカナ</strong> - ひらがなをカタカナに変換します。外来語表記やデータ処理に便利です。</li>
+      </ul>
+
+      <h3>使い方</h3>
+      <p>上のテキストエリアに変換したいテキストを入力し、使いたい変換ボタンをクリックするだけです。変換結果は下のテキストエリアに表示されます。「クリップボードにコピー」ボタンで結果を簡単にコピーでき、「入力と結果を入れ替え」ボタンで連続変換も可能です。すべての処理はブラウザ内で完結するため、入力データが外部に送信されることはありません。</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 ツールボックス All rights reserved.
+  </footer>
+
+  <script>
+    function convert(type) {
+      const input = document.getElementById('inputText').value;
+      let result = input;
+
+      switch (type) {
+        case 'fullToHalf':
+          result = input.replace(/[\uff01-\uff5e]/g, ch =>
+            String.fromCharCode(ch.charCodeAt(0) - 0xfee0)
+          ).replace(/\u3000/g, ' ');
+          break;
+        case 'halfToFull':
+          result = input.replace(/[\x21-\x7e]/g, ch =>
+            String.fromCharCode(ch.charCodeAt(0) + 0xfee0)
+          ).replace(/ /g, '\u3000');
+          break;
+        case 'upperToLower':
+          result = input.toLowerCase();
+          break;
+        case 'lowerToUpper':
+          result = input.toUpperCase();
+          break;
+        case 'kataToHira':
+          result = input.replace(/[\u30a1-\u30f6]/g, ch =>
+            String.fromCharCode(ch.charCodeAt(0) - 0x60)
+          );
+          break;
+        case 'hiraToKata':
+          result = input.replace(/[\u3041-\u3096]/g, ch =>
+            String.fromCharCode(ch.charCodeAt(0) + 0x60)
+          );
+          break;
+      }
+      document.getElementById('outputText').value = result;
+    }
+
+    function copyResult() {
+      const output = document.getElementById('outputText');
+      navigator.clipboard.writeText(output.value).then(() => {
+        const msg = document.getElementById('copyMsg');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 2000);
+      });
+    }
+
+    function swapTexts() {
+      const input = document.getElementById('inputText');
+      const output = document.getElementById('outputText');
+      const temp = input.value;
+      input.value = output.value;
+      output.value = temp;
+    }
+  </script>
+</body>
+</html>

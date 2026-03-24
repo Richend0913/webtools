@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRコード生成ツール｜無料でQRコードを作成・ダウンロード</title>
+  <meta name="description" content="URLやテキストからQRコードを無料で生成。PNG画像としてダウンロード可能。サイズ変更対応。登録不要・インストール不要のオンラインQRコード作成ツール。">
+  <meta name="keywords" content="QRコード,QRコード生成,QRコード作成,無料,オンラインツール">
+  <link rel="canonical" href="https://richend0913.github.io/webtools/tools/qr-generator.html">
+  <link rel="stylesheet" href="tool-template.css">
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "QRコード生成ツール",
+    "description": "URLやテキストからQRコードを生成・ダウンロードできるオンラインツール",
+    "url": "https://richend0913.github.io/webtools/tools/qr-generator.html",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <style>
+    #qrOutput { display: flex; justify-content: center; padding: 24px; background: #fff; border-radius: 8px; margin-top: 16px; }
+    #qrOutput img { image-rendering: pixelated; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../" class="logo">ツールボックス</a>
+      <a href="../">ホーム</a> <span style="color:#94a3b8;">›</span> <span style="color:#64748b;font-size:.85rem;">QRコード生成</span>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1>QRコード生成ツール</h1>
+    <p class="desc">URLやテキストを入力するだけでQRコードを生成。PNG画像としてダウンロードもできます。</p>
+
+    <div class="ad-space">広告スペース</div>
+
+    <div class="tool-area">
+      <h2>QRコードの内容を入力</h2>
+      <div class="form-group">
+        <label for="qrInput">URL またはテキスト</label>
+        <input type="text" id="qrInput" placeholder="https://example.com またはテキストを入力">
+      </div>
+      <div class="row" style="align-items:flex-end;">
+        <div class="form-group">
+          <label for="qrSize">サイズ</label>
+          <select id="qrSize">
+            <option value="4">小 (132px)</option>
+            <option value="6" selected>中 (198px)</option>
+            <option value="8">大 (264px)</option>
+            <option value="12">特大 (396px)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="qrLevel">誤り訂正レベル</label>
+          <select id="qrLevel">
+            <option value="L">L（7%）</option>
+            <option value="M" selected>M（15%）</option>
+            <option value="Q">Q（25%）</option>
+            <option value="H">H（30%）</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn" onclick="generateQR()">QRコードを生成</button>
+        <button class="btn btn-secondary" onclick="downloadQR()" id="downloadBtn" style="display:none;">PNG でダウンロード</button>
+      </div>
+
+      <div id="qrOutput"></div>
+    </div>
+
+    <div class="ad-space">広告スペース</div>
+
+    <section class="info-section">
+      <h2>QRコード生成ツールとは</h2>
+      <p>QRコード生成ツールは、URLやテキストをQRコードに変換するオンラインツールです。生成されたQRコードはPNG画像としてダウンロードでき、印刷物やWebサイト、プレゼンテーション資料などに自由に使用できます。スマートフォンのカメラでQRコードを読み取ることで、素早くURLにアクセスしたり、テキスト情報を取得したりできます。</p>
+
+      <h3>設定オプション</h3>
+      <ul>
+        <li><strong>サイズ</strong> - 小・中・大・特大の4段階から選べます。印刷物に使用する場合は大きめのサイズがおすすめです。</li>
+        <li><strong>誤り訂正レベル</strong> - QRコードの一部が汚れたり欠けたりしても読み取れるようにする機能です。Lレベル（7%）からHレベル（30%）まで選択でき、レベルが高いほど耐久性が上がりますが、QRコードのデータ密度も高くなります。</li>
+      </ul>
+
+      <h3>使い方</h3>
+      <p>テキストフィールドにURLやテキストを入力し、必要に応じてサイズと誤り訂正レベルを設定してから「QRコードを生成」ボタンをクリックしてください。生成されたQRコードは画面に表示され、「PNGでダウンロード」ボタンで画像ファイルとして保存できます。すべての処理はブラウザ内で完結し、入力されたデータがサーバーに送信されることはありません。</p>
+
+      <h3>活用シーン</h3>
+      <p>名刺にWebサイトのURLを載せたい場合、ポスターやチラシに申し込みフォームへのリンクを掲載したい場合、Wi-Fiの接続情報を共有したい場合など、幅広い場面でご活用いただけます。ビジネスシーンからプライベートまで、様々な用途に対応しています。</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 ツールボックス All rights reserved.
+  </footer>
+
+  <script>
+    let currentDataUrl = null;
+
+    function generateQR() {
+      const text = document.getElementById('qrInput').value.trim();
+      if (!text) { alert('テキストまたはURLを入力してください。'); return; }
+
+      const size = parseInt(document.getElementById('qrSize').value);
+      const level = document.getElementById('qrLevel').value;
+      const levelMap = { L: 0, M: 1, Q: 2, H: 3 };
+
+      try {
+        const qr = qrcode(0, levelMap[level] !== undefined ? ['L','M','Q','H'][levelMap[level]] : 'M');
+        qr.addData(text);
+        qr.make();
+
+        const cellSize = size;
+        const margin = 4;
+        const moduleCount = qr.getModuleCount();
+        const totalSize = moduleCount * cellSize + margin * 2;
+
+        const canvas = document.createElement('canvas');
+        canvas.width = totalSize;
+        canvas.height = totalSize;
+        const ctx = canvas.getContext('2d');
+
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, totalSize, totalSize);
+
+        ctx.fillStyle = '#000000';
+        for (let row = 0; row < moduleCount; row++) {
+          for (let col = 0; col < moduleCount; col++) {
+            if (qr.isDark(row, col)) {
+              ctx.fillRect(col * cellSize + margin, row * cellSize + margin, cellSize, cellSize);
+            }
+          }
+        }
+
+        currentDataUrl = canvas.toDataURL('image/png');
+        const output = document.getElementById('qrOutput');
+        output.innerHTML = `<img src="${currentDataUrl}" alt="QRコード" style="width:${totalSize}px;height:${totalSize}px;">`;
+        document.getElementById('downloadBtn').style.display = 'inline-block';
+      } catch (e) {
+        alert('QRコードの生成に失敗しました。テキストが長すぎる可能性があります。');
+      }
+    }
+
+    function downloadQR() {
+      if (!currentDataUrl) return;
+      const a = document.createElement('a');
+      a.href = currentDataUrl;
+      a.download = 'qrcode.png';
+      a.click();
+    }
+
+    // Enter key to generate
+    document.getElementById('qrInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') generateQR();
+    });
+  </script>
+</body>
+</html>

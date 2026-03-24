@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON整形ツール｜JSONフォーマッター・圧縮</title>
+  <meta name="description" content="JSONデータの整形（フォーマット）と圧縮（ミニファイ）がオンラインで簡単にできます。インデント設定可能。バリデーション機能付き。登録不要・無料。">
+  <meta name="keywords" content="JSON整形,JSONフォーマッター,JSON圧縮,JSONバリデーション,オンラインツール">
+  <link rel="canonical" href="https://richend0913.github.io/webtools/tools/json-formatter.html">
+  <link rel="stylesheet" href="tool-template.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON整形ツール",
+    "description": "JSONデータの整形・圧縮・バリデーションができるオンラインツール",
+    "url": "https://richend0913.github.io/webtools/tools/json-formatter.html",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <style>
+    #errorMsg { color: #dc2626; background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 12px; font-size: .85rem; margin-top: 8px; display: none; }
+    #outputArea { font-family: 'Consolas', 'Monaco', monospace; font-size: .85rem; background: #1e293b; color: #e2e8f0; border-radius: 8px; padding: 16px; min-height: 200px; white-space: pre-wrap; word-break: break-all; overflow-x: auto; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../" class="logo">ツールボックス</a>
+      <a href="../">ホーム</a> <span style="color:#94a3b8;">›</span> <span style="color:#64748b;font-size:.85rem;">JSON整形ツール</span>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1>JSON整形ツール</h1>
+    <p class="desc">JSONデータの整形（フォーマット）と圧縮（ミニファイ）をオンラインで行えます。</p>
+
+    <div class="ad-space">広告スペース</div>
+
+    <div class="tool-area">
+      <h2>JSONを入力</h2>
+      <div class="form-group">
+        <textarea id="inputJson" placeholder='{"key": "value", "array": [1, 2, 3]}' rows="8" style="font-family:Consolas,Monaco,monospace;font-size:.85rem;"></textarea>
+      </div>
+
+      <div class="row" style="align-items:center;flex-wrap:wrap;">
+        <div class="form-group" style="flex:0 0 auto;min-width:180px;">
+          <label for="indentSelect">インデント</label>
+          <select id="indentSelect">
+            <option value="2">2スペース</option>
+            <option value="4">4スペース</option>
+            <option value="tab">タブ</option>
+          </select>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;padding-top:16px;">
+          <button class="btn" onclick="formatJson()">整形</button>
+          <button class="btn btn-secondary" onclick="minifyJson()">圧縮</button>
+          <button class="btn btn-secondary" onclick="copyOutput()">コピー</button>
+          <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+        </div>
+      </div>
+
+      <div id="errorMsg"></div>
+      <div id="copyMsg" style="color:#16a34a;font-size:.85rem;margin-top:8px;display:none;">コピーしました！</div>
+
+      <h2 style="margin-top:16px;">出力結果</h2>
+      <div id="outputArea">ここに整形結果が表示されます...</div>
+    </div>
+
+    <div class="ad-space">広告スペース</div>
+
+    <section class="info-section">
+      <h2>JSON整形ツールとは</h2>
+      <p>JSON整形ツール（JSONフォーマッター）は、JSON形式のデータを見やすく整形したり、余分な空白を取り除いて圧縮したりできるオンラインツールです。Web開発やAPI開発において、JSONデータの確認・デバッグ・共有に欠かせないツールです。</p>
+
+      <h3>主な機能</h3>
+      <ul>
+        <li><strong>整形（Pretty Print）</strong> - 圧縮されたJSONを、適切なインデントと改行を加えて読みやすい形式に変換します。インデントは2スペース、4スペース、タブから選択できます。</li>
+        <li><strong>圧縮（Minify）</strong> - 不要な空白と改行を除去し、JSONデータを最小サイズに圧縮します。通信データの削減やストレージの節約に役立ちます。</li>
+        <li><strong>バリデーション</strong> - 入力されたJSONの構文をチェックし、エラーがある場合はエラーメッセージを表示します。JSONの文法ミスを素早く発見できます。</li>
+      </ul>
+
+      <h3>使い方</h3>
+      <p>テキストエリアにJSONデータを入力またはペーストし、「整形」または「圧縮」ボタンをクリックしてください。正しいJSONであれば変換結果が下部に表示され、構文エラーがある場合はエラーメッセージが表示されます。「コピー」ボタンで結果をクリップボードにコピーできます。すべての処理はブラウザ内で完結するため、データが外部に送信されることはなく、安全にご利用いただけます。</p>
+
+      <h3>活用シーン</h3>
+      <p>APIレスポンスの内容確認、設定ファイルの編集、データベースから取得したJSONの整形、チーム間でのデータ共有時のフォーマット統一など、開発現場の様々な場面で活用できます。</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 ツールボックス All rights reserved.
+  </footer>
+
+  <script>
+    function getIndent() {
+      const v = document.getElementById('indentSelect').value;
+      return v === 'tab' ? '\t' : parseInt(v);
+    }
+
+    function formatJson() {
+      const input = document.getElementById('inputJson').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+      const output = document.getElementById('outputArea');
+      errorMsg.style.display = 'none';
+
+      if (!input) { output.textContent = ''; return; }
+
+      try {
+        const parsed = JSON.parse(input);
+        output.textContent = JSON.stringify(parsed, null, getIndent());
+      } catch (e) {
+        errorMsg.textContent = 'JSONエラー: ' + e.message;
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function minifyJson() {
+      const input = document.getElementById('inputJson').value.trim();
+      const errorMsg = document.getElementById('errorMsg');
+      const output = document.getElementById('outputArea');
+      errorMsg.style.display = 'none';
+
+      if (!input) { output.textContent = ''; return; }
+
+      try {
+        const parsed = JSON.parse(input);
+        output.textContent = JSON.stringify(parsed);
+      } catch (e) {
+        errorMsg.textContent = 'JSONエラー: ' + e.message;
+        errorMsg.style.display = 'block';
+      }
+    }
+
+    function copyOutput() {
+      const text = document.getElementById('outputArea').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const msg = document.getElementById('copyMsg');
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 2000);
+      });
+    }
+
+    function clearAll() {
+      document.getElementById('inputJson').value = '';
+      document.getElementById('outputArea').textContent = '';
+      document.getElementById('errorMsg').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

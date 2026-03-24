@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>住宅ローン計算ツール - 月々返済額・総返済額シミュレーション | WebTools</title>
+<meta name="description" content="住宅ローンの月々返済額、総返済額、利息総額を元利均等返済方式で計算。ボーナス返済にも対応した無料シミュレーションツール。">
+<link rel="stylesheet" href="tool-template.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "住宅ローン計算ツール",
+  "description": "住宅ローンの返済額を元利均等返済方式でシミュレーション",
+  "url": "https://webtools.example.com/tools/loan-calculator.html",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "All",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+}
+</script>
+<style>
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+.result-card { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 16px; text-align: center; }
+.result-card.primary { grid-column: 1/-1; background: #eff6ff; border-color: #93c5fd; }
+.result-card .result-value { font-size: 1.5rem; font-weight: 700; color: #2563eb; }
+.result-card .result-label { font-size: .8rem; color: #64748b; margin-bottom: 4px; }
+.amort-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: .85rem; }
+.amort-table th { background: #f1f5f9; padding: 8px; text-align: right; font-weight: 600; border-bottom: 2px solid #e2e8f0; }
+.amort-table td { padding: 8px; text-align: right; border-bottom: 1px solid #f1f5f9; }
+.amort-table th:first-child, .amort-table td:first-child { text-align: center; }
+@media(max-width:600px){ .results-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="../" class="logo">🛠 WebTools</a><a href="../">ホーム</a><span style="color:#94a3b8">›</span><span style="font-size:.85rem">住宅ローン計算</span></div></header>
+<main class="main">
+<h1>住宅ローン計算ツール</h1>
+<p class="desc">元利均等返済方式で月々の返済額をシミュレーション</p>
+
+<div class="ad-space">広告スペース</div>
+
+<div class="tool-area">
+<h2>ローン条件入力</h2>
+<div class="row">
+<div class="form-group">
+<label>借入金額（万円）</label>
+<input type="number" id="principal" value="3500" min="1">
+</div>
+<div class="form-group">
+<label>金利（年利 %）</label>
+<input type="number" id="rate" value="0.5" min="0" step="0.01">
+</div>
+</div>
+<div class="row">
+<div class="form-group">
+<label>返済期間（年）</label>
+<input type="number" id="years" value="35" min="1" max="50">
+</div>
+<div class="form-group">
+<label>ボーナス返済額（万円）</label>
+<input type="number" id="bonus" value="0" min="0">
+</div>
+</div>
+<button class="btn" onclick="calculate()" style="width:100%">計算する</button>
+
+<div id="results" style="display:none">
+<div class="results-grid">
+<div class="result-card primary">
+<div class="result-label">月々返済額</div>
+<div class="result-value" id="monthly"></div>
+</div>
+<div class="result-card" id="bonusCard" style="display:none">
+<div class="result-label">ボーナス月返済額</div>
+<div class="result-value" id="bonusMonthly"></div>
+</div>
+<div class="result-card">
+<div class="result-label">総返済額</div>
+<div class="result-value" id="total" style="font-size:1.2rem"></div>
+</div>
+<div class="result-card">
+<div class="result-label">利息総額</div>
+<div class="result-value" id="interest" style="font-size:1.2rem"></div>
+</div>
+</div>
+
+<h2 style="margin-top:24px">返済概要（5年ごと）</h2>
+<table class="amort-table" id="amortTable">
+<thead><tr><th>年</th><th>元金残高</th><th>年間返済額</th><th>うち利息</th></tr></thead>
+<tbody id="amortBody"></tbody>
+</table>
+</div>
+</div>
+
+<div class="ad-space">広告スペース</div>
+
+<section class="info-section">
+<h2>住宅ローン計算ツールについて</h2>
+<p>この住宅ローン計算ツールは、住宅購入を検討されている方のために、元利均等返済方式での月々の返済額や総返済額を簡単にシミュレーションできる無料のオンラインツールです。借入金額、金利、返済期間、ボーナス返済額を入力するだけで、瞬時に計算結果を確認できます。</p>
+<h3>元利均等返済とは</h3>
+<p>元利均等返済は、毎月の返済額（元金＋利息）が一定となる返済方式です。返済初期は利息の割合が大きく、返済が進むにつれて元金の割合が増えていきます。毎月の支出が一定のため、家計の計画が立てやすいというメリットがあります。日本の住宅ローンで最も一般的な返済方式です。</p>
+<h3>使い方</h3>
+<ul>
+<li>借入金額を万円単位で入力します（例：3,500万円の場合は「3500」）</li>
+<li>金利は年利をパーセントで入力します（例：0.5%の場合は「0.5」）</li>
+<li>返済期間は年数で入力します（一般的には35年）</li>
+<li>ボーナス返済を利用する場合は、ボーナス返済に充てる金額を万円単位で入力します</li>
+</ul>
+<h3>注意事項</h3>
+<p>本ツールの計算結果は概算値です。実際のローン契約では、事務手数料、保証料、団体信用生命保険料などの諸費用が別途発生します。正確な返済計画については、金融機関にご相談ください。金利の変動や繰り上げ返済なども考慮する必要があります。</p>
+</section>
+</main>
+<footer class="footer">&copy; 2026 WebTools - 便利なオンラインツール集</footer>
+
+<script>
+function fmt(n) { return Math.round(n).toLocaleString(); }
+function fmtYen(n) { return '¥' + fmt(n); }
+
+function calculate() {
+  const P = parseFloat(document.getElementById('principal').value) * 10000;
+  const r = parseFloat(document.getElementById('rate').value) / 100;
+  const years = parseInt(document.getElementById('years').value);
+  const bonusTotal = parseFloat(document.getElementById('bonus').value) * 10000;
+  const n = years * 12;
+  const mr = r / 12;
+
+  const regularP = P - bonusTotal;
+  let monthlyPayment;
+  if (mr === 0) {
+    monthlyPayment = regularP / n;
+  } else {
+    monthlyPayment = regularP * mr * Math.pow(1+mr, n) / (Math.pow(1+mr, n) - 1);
+  }
+
+  let bonusPayment = 0;
+  const bonusCard = document.getElementById('bonusCard');
+  if (bonusTotal > 0) {
+    const bn = years * 2;
+    const br = r / 2;
+    if (br === 0) {
+      bonusPayment = bonusTotal / bn;
+    } else {
+      bonusPayment = bonusTotal * br * Math.pow(1+br, bn) / (Math.pow(1+br, bn) - 1);
+    }
+    bonusCard.style.display = '';
+    document.getElementById('bonusMonthly').textContent = fmtYen(monthlyPayment + bonusPayment);
+  } else {
+    bonusCard.style.display = 'none';
+  }
+
+  const totalRegular = monthlyPayment * n;
+  const totalBonus = bonusPayment * years * 2;
+  const totalPayment = totalRegular + totalBonus;
+  const totalInterest = totalPayment - P;
+
+  document.getElementById('monthly').textContent = fmtYen(monthlyPayment);
+  document.getElementById('total').textContent = fmtYen(totalPayment);
+  document.getElementById('interest').textContent = fmtYen(totalInterest);
+  document.getElementById('results').style.display = '';
+
+  // amortization summary (every 5 years)
+  const tbody = document.getElementById('amortBody');
+  tbody.innerHTML = '';
+  let balance = regularP;
+  for (let y = 1; y <= years; y++) {
+    let yearInterest = 0;
+    for (let m = 0; m < 12; m++) {
+      const mi = balance * mr;
+      yearInterest += mi;
+      balance -= (monthlyPayment - mi);
+    }
+    if (balance < 0) balance = 0;
+    if (y % 5 === 0 || y === 1 || y === years) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${y}年目</td><td>${fmtYen(balance)}</td><td>${fmtYen(monthlyPayment*12)}</td><td>${fmtYen(yearInterest)}</td>`;
+      tbody.appendChild(tr);
+    }
+  }
+}
+
+calculate();
+</script>
+</body>
+</html>

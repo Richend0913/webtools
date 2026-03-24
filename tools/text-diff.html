@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>テキスト差分比較ツール｜オンラインDiffチェッカー</title>
+  <meta name="description" content="2つのテキストの差分をオンラインで比較。追加・削除された行をハイライト表示。コードレビューや文書校正に最適。登録不要・無料で使えます。">
+  <meta name="keywords" content="テキスト比較,差分チェック,diff,テキスト差分,オンラインツール">
+  <link rel="canonical" href="https://richend0913.github.io/webtools/tools/text-diff.html">
+  <link rel="stylesheet" href="tool-template.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "テキスト差分比較ツール",
+    "description": "2つのテキストの差分を比較してハイライト表示するオンラインツール",
+    "url": "https://richend0913.github.io/webtools/tools/text-diff.html",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" }
+  }
+  </script>
+  <style>
+    .diff-result { font-family: 'Consolas', 'Monaco', monospace; font-size: .85rem; border: 1px solid #e9ecef; border-radius: 8px; overflow: hidden; margin-top: 16px; }
+    .diff-line { padding: 2px 12px; white-space: pre-wrap; word-break: break-all; border-bottom: 1px solid #f1f5f9; display: flex; }
+    .diff-line .line-num { min-width: 40px; color: #94a3b8; text-align: right; padding-right: 12px; user-select: none; flex-shrink: 0; }
+    .diff-line .line-content { flex: 1; }
+    .diff-added { background: #dcfce7; color: #166534; }
+    .diff-removed { background: #fee2e2; color: #991b1b; }
+    .diff-unchanged { background: #fff; color: #64748b; }
+    .diff-stats { display: flex; gap: 16px; margin-top: 12px; font-size: .85rem; }
+    .diff-stats span { padding: 4px 12px; border-radius: 4px; font-weight: 600; }
+    .stat-added { background: #dcfce7; color: #166534; }
+    .stat-removed { background: #fee2e2; color: #991b1b; }
+    .stat-unchanged { background: #f1f5f9; color: #64748b; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="../" class="logo">ツールボックス</a>
+      <a href="../">ホーム</a> <span style="color:#94a3b8;">›</span> <span style="color:#64748b;font-size:.85rem;">テキスト差分比較</span>
+    </div>
+  </header>
+
+  <main class="main">
+    <h1>テキスト差分比較ツール</h1>
+    <p class="desc">2つのテキストを比較し、追加・削除された行をハイライト表示します。</p>
+
+    <div class="ad-space">広告スペース</div>
+
+    <div class="tool-area">
+      <div class="row">
+        <div class="form-group">
+          <label for="textA">元のテキスト</label>
+          <textarea id="textA" placeholder="比較元のテキストを入力..." rows="10"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="textB">変更後のテキスト</label>
+          <textarea id="textB" placeholder="変更後のテキストを入力..." rows="10"></textarea>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button class="btn" onclick="compareDiff()">比較する</button>
+        <button class="btn btn-secondary" onclick="clearAll()">クリア</button>
+        <button class="btn btn-secondary" onclick="swapTexts()">入れ替え</button>
+      </div>
+
+      <div id="diffStats" class="diff-stats" style="display:none;"></div>
+      <div id="diffResult"></div>
+    </div>
+
+    <div class="ad-space">広告スペース</div>
+
+    <section class="info-section">
+      <h2>テキスト差分比較ツールとは</h2>
+      <p>テキスト差分比較ツール（Diffチェッカー）は、2つのテキストを行単位で比較し、追加された行と削除された行を色分けして表示するオンラインツールです。プログラミングのコードレビュー、文書の修正確認、翻訳テキストの照合など、2つのテキストの違いを素早く把握したい場面で活躍します。</p>
+
+      <h3>表示の見方</h3>
+      <ul>
+        <li><strong>緑色の行（+）</strong> - 変更後のテキストで追加された行を示します。</li>
+        <li><strong>赤色の行（-）</strong> - 元のテキストから削除された行を示します。</li>
+        <li><strong>白色の行</strong> - 変更がなく、両方のテキストに共通する行です。</li>
+      </ul>
+
+      <h3>使い方</h3>
+      <p>左側（上側）のテキストエリアに元のテキストを、右側（下側）に変更後のテキストを入力し、「比較する」ボタンをクリックしてください。差分結果が下に表示されます。LCS（最長共通部分列）アルゴリズムを使用しているため、行の追加・削除・移動を正確に検出できます。スマートフォンでも使いやすいレスポンシブデザインに対応しており、テキストエリアは自動的に縦並びに切り替わります。</p>
+
+      <h3>活用例</h3>
+      <p>ソースコードの変更箇所の確認、契約書や仕様書の修正履歴チェック、ブログ記事の推敲前後の比較、設定ファイルの変更点確認など、さまざまな場面で便利にお使いいただけます。すべてブラウザ内で処理されるため、機密性の高い文書も安心して比較できます。</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 ツールボックス All rights reserved.
+  </footer>
+
+  <script>
+    function lcs(a, b) {
+      const m = a.length, n = b.length;
+      const dp = Array.from({length: m + 1}, () => new Array(n + 1).fill(0));
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          dp[i][j] = a[i-1] === b[j-1] ? dp[i-1][j-1] + 1 : Math.max(dp[i-1][j], dp[i][j-1]);
+        }
+      }
+      const result = [];
+      let i = m, j = n;
+      while (i > 0 && j > 0) {
+        if (a[i-1] === b[j-1]) { result.unshift({type: 'same', value: a[i-1]}); i--; j--; }
+        else if (dp[i-1][j] > dp[i][j-1]) { result.unshift({type: 'removed', value: a[i-1]}); i--; }
+        else { result.unshift({type: 'added', value: b[j-1]}); j--; }
+      }
+      while (i > 0) { result.unshift({type: 'removed', value: a[i-1]}); i--; }
+      while (j > 0) { result.unshift({type: 'added', value: b[j-1]}); j--; }
+      return result;
+    }
+
+    function compareDiff() {
+      const a = document.getElementById('textA').value.split('\n');
+      const b = document.getElementById('textB').value.split('\n');
+      const diff = lcs(a, b);
+
+      let added = 0, removed = 0, unchanged = 0;
+      let html = '<div class="diff-result">';
+      let lineNum = 0;
+
+      diff.forEach(d => {
+        lineNum++;
+        const escaped = d.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') || ' ';
+        if (d.type === 'added') {
+          html += `<div class="diff-line diff-added"><span class="line-num">${lineNum}</span><span class="line-content">+ ${escaped}</span></div>`;
+          added++;
+        } else if (d.type === 'removed') {
+          html += `<div class="diff-line diff-removed"><span class="line-num">${lineNum}</span><span class="line-content">- ${escaped}</span></div>`;
+          removed++;
+        } else {
+          html += `<div class="diff-line diff-unchanged"><span class="line-num">${lineNum}</span><span class="line-content">  ${escaped}</span></div>`;
+          unchanged++;
+        }
+      });
+      html += '</div>';
+
+      document.getElementById('diffResult').innerHTML = html;
+      const stats = document.getElementById('diffStats');
+      stats.style.display = 'flex';
+      stats.innerHTML = `<span class="stat-added">+${added} 追加</span><span class="stat-removed">-${removed} 削除</span><span class="stat-unchanged">${unchanged} 変更なし</span>`;
+    }
+
+    function clearAll() {
+      document.getElementById('textA').value = '';
+      document.getElementById('textB').value = '';
+      document.getElementById('diffResult').innerHTML = '';
+      document.getElementById('diffStats').style.display = 'none';
+    }
+
+    function swapTexts() {
+      const a = document.getElementById('textA');
+      const b = document.getElementById('textB');
+      const temp = a.value;
+      a.value = b.value;
+      b.value = temp;
+    }
+  </script>
+</body>
+</html>
