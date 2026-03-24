@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ツールボックス｜無料で使えるWebツール集</title>
+  <meta name="description" content="文字数カウンター、QRコード生成、パスワード生成、ローン計算など、便利なWebツールが無料で使えます。登録不要・インストール不要。">
+  <meta name="keywords" content="Webツール,無料,文字数カウント,QRコード,パスワード生成,計算ツール,オンラインツール">
+  <link rel="canonical" href="https://richend0913.github.io/webtools/">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, 'Segoe UI', 'Hiragino Sans', sans-serif; background: #f8f9fa; color: #333; line-height: 1.8; }
+    .header { background: #fff; border-bottom: 1px solid #e9ecef; padding: 16px 0; position: sticky; top: 0; z-index: 100; }
+    .header-inner { max-width: 1000px; margin: 0 auto; padding: 0 20px; display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 1.3rem; font-weight: 700; color: #2563eb; }
+    .logo span { color: #64748b; font-weight: 400; font-size: .85rem; margin-left: 8px; }
+    .hero { background: linear-gradient(135deg, #2563eb, #1d4ed8); color: #fff; padding: 60px 20px; text-align: center; }
+    .hero h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 12px; }
+    .hero p { font-size: 1rem; opacity: .85; max-width: 500px; margin: 0 auto; }
+    .main { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
+    .category { margin-bottom: 40px; }
+    .category-title { font-size: 1.1rem; font-weight: 700; color: #1e293b; margin-bottom: 16px; padding-left: 12px; border-left: 3px solid #2563eb; }
+    .tool-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .tool-card { background: #fff; border: 1px solid #e9ecef; border-radius: 12px; padding: 20px; transition: all .2s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+    .tool-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.08); border-color: #2563eb; }
+    .tool-icon { font-size: 2rem; margin-bottom: 10px; }
+    .tool-card h3 { font-size: .95rem; font-weight: 600; color: #1e293b; margin-bottom: 6px; }
+    .tool-card p { font-size: .8rem; color: #94a3b8; line-height: 1.6; }
+    .tool-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: .65rem; font-weight: 600; background: #dbeafe; color: #2563eb; margin-bottom: 8px; }
+    .footer { text-align: center; padding: 40px 20px; color: #94a3b8; font-size: .8rem; border-top: 1px solid #e9ecef; background: #fff; margin-top: 40px; }
+    /* Ad placeholder */
+    .ad-space { background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 20px; text-align: center; color: #94a3b8; font-size: .8rem; margin: 24px 0; min-height: 90px; display: flex; align-items: center; justify-content: center; }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.4rem; }
+      .tool-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .tool-card { padding: 14px; }
+      .tool-icon { font-size: 1.5rem; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ツールボックス",
+    "url": "https://richend0913.github.io/webtools/",
+    "description": "無料で使えるWebツール集。文字数カウンター、QRコード生成、パスワード生成など。"
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">ToolBox <span>無料Webツール集</span></div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1>便利なWebツールを<br>すべて無料で</h1>
+    <p>登録不要・インストール不要。ブラウザだけで使える便利ツールを集めました。</p>
+  </section>
+
+  <main class="main">
+
+    <!-- 広告スペース -->
+    <div class="ad-space" id="ad-top">広告スペース（AdSense設定後に表示）</div>
+
+    <div class="category">
+      <h2 class="category-title">テキスト・文章ツール</h2>
+      <div class="tool-grid">
+        <a href="tools/character-counter.html" class="tool-card">
+          <div class="tool-icon">📝</div>
+          <span class="tool-badge">人気</span>
+          <h3>文字数カウンター</h3>
+          <p>文字数・単語数・行数をリアルタイムでカウント</p>
+        </a>
+        <a href="tools/text-converter.html" class="tool-card">
+          <div class="tool-icon">🔄</div>
+          <h3>テキスト変換</h3>
+          <p>全角⇔半角、大文字⇔小文字、カタカナ⇔ひらがな変換</p>
+        </a>
+        <a href="tools/json-formatter.html" class="tool-card">
+          <div class="tool-icon">📋</div>
+          <h3>JSON整形ツール</h3>
+          <p>JSONを見やすく整形・圧縮・バリデーション</p>
+        </a>
+        <a href="tools/text-diff.html" class="tool-card">
+          <div class="tool-icon">🔍</div>
+          <h3>テキスト差分比較</h3>
+          <p>2つのテキストの違いをハイライト表示</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- 広告スペース -->
+    <div class="ad-space" id="ad-mid1">広告スペース（AdSense設定後に表示）</div>
+
+    <div class="category">
+      <h2 class="category-title">生成ツール</h2>
+      <div class="tool-grid">
+        <a href="tools/qr-generator.html" class="tool-card">
+          <div class="tool-icon">📱</div>
+          <span class="tool-badge">人気</span>
+          <h3>QRコード生成</h3>
+          <p>URL・テキストからQRコードを無料で生成</p>
+        </a>
+        <a href="tools/password-generator.html" class="tool-card">
+          <div class="tool-icon">🔐</div>
+          <span class="tool-badge">人気</span>
+          <h3>パスワード生成</h3>
+          <p>安全なランダムパスワードを一瞬で生成</p>
+        </a>
+        <a href="tools/color-picker.html" class="tool-card">
+          <div class="tool-icon">🎨</div>
+          <h3>カラーコード変換</h3>
+          <p>HEX・RGB・HSLのカラーコード相互変換</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="category">
+      <h2 class="category-title">計算ツール</h2>
+      <div class="tool-grid">
+        <a href="tools/loan-calculator.html" class="tool-card">
+          <div class="tool-icon">🏠</div>
+          <span class="tool-badge">人気</span>
+          <h3>住宅ローン計算</h3>
+          <p>月々の返済額・総返済額・利息をシミュレーション</p>
+        </a>
+        <a href="tools/bmi-calculator.html" class="tool-card">
+          <div class="tool-icon">⚖️</div>
+          <h3>BMI計算</h3>
+          <p>身長と体重からBMIと適正体重を計算</p>
+        </a>
+        <a href="tools/age-calculator.html" class="tool-card">
+          <div class="tool-icon">🎂</div>
+          <h3>年齢計算</h3>
+          <p>生年月日から現在の年齢・干支・星座を表示</p>
+        </a>
+        <a href="tools/split-bill.html" class="tool-card">
+          <div class="tool-icon">💰</div>
+          <h3>割り勘計算</h3>
+          <p>合計金額を人数で割り勘。傾斜配分にも対応</p>
+        </a>
+        <a href="tools/unit-converter.html" class="tool-card">
+          <div class="tool-icon">📏</div>
+          <h3>単位変換</h3>
+          <p>長さ・重さ・温度・面積の単位を相互変換</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- 広告スペース -->
+    <div class="ad-space" id="ad-bottom">広告スペース（AdSense設定後に表示）</div>
+
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 ToolBox. All rights reserved.</p>
+    <p style="margin-top:4px;">すべてのツールは無料でご利用いただけます。</p>
+  </footer>
+</body>
+</html>
